@@ -194,6 +194,32 @@ export default {
         goHome() {
             this.$router.push({ name: "Home" });
         },
+        validateCarName(e){
+            let val = e.target.value;
+            // console.log(e);
+            // console.log(val);
+            this.validateCarNameInput(val);
+        },
+        validateCarNameInput(val){
+            // Not Value in Name Input
+            if(val == ""){
+                this.carNameErr = true;
+                this.isCarNameValidated = false;
+                this.carNameMsg = "Must Enter Car Name";
+            } else if(val != "" && !isNaN(val)){
+                this.carNameErr = true;
+                this.isCarNameValidated = false;
+                this.carNameMsg = "Car Name Must be Real Text";
+            } else if(val.length > 20){
+                this.carNameErr = true;
+                this.isCarNameValidated = false;
+                this.carNameMsg = "Car Name Must be 20 chars or less";
+            } else {
+                this.carNameErr = false;
+                this.isCarNameValidated = true;
+                this.carNameMsg = "";
+            }
+        },
         addNewCar() {
 
             // console.log("Add New Car");
@@ -211,6 +237,8 @@ export default {
                 this.resultErrMsg = "Failed Validating Form";
                 this.resultSuccess = false;
                 this.resultSuccessMsg = "";
+                // Car Name Validate
+                this.validateCarNameInput(this.carName);
             }
 
         },
