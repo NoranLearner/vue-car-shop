@@ -257,7 +257,7 @@ export default {
             }
         },
 
-        // ModelYear
+        // Car Model Year
         validateCarModelYear(e) {
             let val = e.target.value;
             this.validateCarModelYearInput(val);
@@ -285,6 +285,27 @@ export default {
             }
         },
 
+        // Car Description
+        validateCarDesc(e) {
+            let val = e.target.value;
+            this.validateCarDescInput(val);
+        },
+        validateCarDescInput(val){
+            if (val == "") {
+                this.carDescErr = true;
+                this.isCarDescValidated = false;
+                this.carDescMsg = "Must Enter Car Description";
+            } else if( val.length > 100 ){
+                this.carDescErr = true;
+                this.isCarDescValidated = false;
+                this.carDescMsg = "Car Description Must be 100 chars or less";
+            } else {
+                this.carDescErr = false;
+                this.isCarDescValidated = true;
+                this.carDescMsg = "";
+            }
+        },
+
         // Add New Car Method
         addNewCar() {
 
@@ -309,6 +330,8 @@ export default {
                 this.validateCarPriceInput(this.carPrice);
                 // Car Model Year Validate
                 this.validateCarModelYearInput(this.carModelYear);
+                // Car Description Validate
+                this.validateCarDescInput(this.carDesc);
             }
 
         },
