@@ -89,7 +89,8 @@
                         <div class="form-floating" :class="{ 'form-data-error': carImageErr }">
 
                             <input type="file" class="form-control w300 customFileField" id="carShopImage"
-                                placeholder="Car Image" ref="carImg" @input="validateCarImage()" @change="validateCarImage()">
+                                placeholder="Car Image" ref="carImg" @input="validateCarImage()"
+                                @change="validateCarImage()">
 
                             <label for="carShopImage">Car Image</label>
 
@@ -110,7 +111,8 @@
                         <div class="form-floating" :class="{ 'form-data-error': carDescErr }">
 
                             <textarea class="form-control w300 h125" id="carShopDesc" placeholder="Car Description"
-                                v-model.trim="carDesc" @input="validateCarDesc($event)" @change="validateCarDesc($event)"></textarea>
+                                v-model.trim="carDesc" @input="validateCarDesc($event)"
+                                @change="validateCarDesc($event)"></textarea>
 
                             <label for="carShopDesc">Car Description</label>
 
@@ -191,26 +193,30 @@ export default {
     },
 
     methods: {
+
+        // Go To Home Page
         goHome() {
             this.$router.push({ name: "Home" });
         },
-        validateCarName(e){
+
+        // Car Name
+        validateCarName(e) {
             let val = e.target.value;
             // console.log(e);
             // console.log(val);
             this.validateCarNameInput(val);
         },
-        validateCarNameInput(val){
+        validateCarNameInput(val) {
             // Not Value in Name Input
-            if(val == ""){
+            if (val == "") {
                 this.carNameErr = true;
                 this.isCarNameValidated = false;
                 this.carNameMsg = "Must Enter Car Name";
-            } else if(val != "" && !isNaN(val)){
+            } else if (val != "" && !isNaN(val)) {
                 this.carNameErr = true;
                 this.isCarNameValidated = false;
                 this.carNameMsg = "Car Name Must be Real Text";
-            } else if(val.length > 20){
+            } else if (val.length > 20) {
                 this.carNameErr = true;
                 this.isCarNameValidated = false;
                 this.carNameMsg = "Car Name Must be 20 chars or less";
@@ -220,6 +226,66 @@ export default {
                 this.carNameMsg = "";
             }
         },
+
+        // Car Price
+        validateCarPrice(e) {
+            let val = e.target.value;
+            this.validateCarPriceInput(val);
+        },
+        validateCarPriceInput(val) {
+            // Not Value in Price Input
+            if (val == "") {
+                this.carPriceErr = true;
+                this.isCarPriceValidated = false;
+                this.carPriceMsg = "Must Enter Car Price";
+            } else if (val != "" && isNaN(val)) {
+                this.carPriceErr = true;
+                this.isCarPriceValidated = false;
+                this.carPriceMsg = "Car Price has to be a number";
+            } else if (val < 0) {
+                this.carPriceErr = true;
+                this.isCarPriceValidated = false;
+                this.carPriceMsg = "Car Price can not be negative";
+            } else if (val == 0 || val === 0.0) {
+                this.carPriceErr = true;
+                this.isCarPriceValidated = false;
+                this.carPriceMsg = "Car Price can not be zero";
+            } else {
+                this.carPriceErr = false;
+                this.isCarPriceValidated = true;
+                this.carPriceMsg = "";
+            }
+        },
+
+        // ModelYear
+        validateCarModelYear(e) {
+            let val = e.target.value;
+            this.validateCarModelYearInput(val);
+        },
+        validateCarModelYearInput(val) {
+            // Not Value in ModelYear Input
+            if (val == "") {
+                this.carModelYearErr = true;
+                this.isCarModelYearValidated = false;
+                this.carModelYearMsg = "Must Enter Car Model Year. Ex: 2006";
+            } else if (/^[0-9]+$/.test(val) === false) {
+                this.carModelYearErr = true;
+                this.isCarModelYearValidated = false;
+                this.carModelYearMsg = "Only Numbers. Ex: 2006";
+            }
+            else if (val.length < 4 || val.length > 4) {
+                this.carModelYearErr = true;
+                this.isCarModelYearValidated = false;
+                this.carModelYearMsg = "Must Enter Valid Year";
+            }
+            else {
+                this.carModelYearErr = false;
+                this.isCarModelYearValidated = true;
+                this.carModelYearMsg = "";
+            }
+        },
+
+        // Add New Car Method
         addNewCar() {
 
             // console.log("Add New Car");
@@ -231,7 +297,7 @@ export default {
                 this.resultSuccessMsg = "Validated Successfully";
                 this.resultErr = false;
                 this.resultErrMsg = "";
-            } else{
+            } else {
                 // console.log("Failed Validating Form");
                 this.resultErr = true;
                 this.resultErrMsg = "Failed Validating Form";
@@ -239,24 +305,30 @@ export default {
                 this.resultSuccessMsg = "";
                 // Car Name Validate
                 this.validateCarNameInput(this.carName);
+                // Car Price Validate
+                this.validateCarPriceInput(this.carPrice);
+                // Car Model Year Validate
+                this.validateCarModelYearInput(this.carModelYear);
             }
 
         },
-        resetFormErr(){
+
+        // Reset Method
+        resetFormErr() {
             this.carNameErr = false,
-            this.carNameMsg = "",
-            this.carPriceErr = false,
-            this.carPriceMsg = "",
-            this.carModelYearErr = false,
-            this.carModelYearMsg= "",
-            this.carImageErr = false,
-            this.carImageMsg = "",
-            this.carDescErr = false,
-            this.carDescMsg = "",
-            this.resultSuccess = false,
-            this.resultSuccessMsg = "",
-            this.resultErr = false,
-            this.resultErrMsg = ""
+                this.carNameMsg = "",
+                this.carPriceErr = false,
+                this.carPriceMsg = "",
+                this.carModelYearErr = false,
+                this.carModelYearMsg = "",
+                this.carImageErr = false,
+                this.carImageMsg = "",
+                this.carDescErr = false,
+                this.carDescMsg = "",
+                this.resultSuccess = false,
+                this.resultSuccessMsg = "",
+                this.resultErr = false,
+                this.resultErrMsg = ""
         },
     }
 
