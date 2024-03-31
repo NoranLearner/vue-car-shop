@@ -23,7 +23,8 @@
                         <div class="form-floating" :class="{ 'form-data-error': carNameErr }">
 
                             <input type="text" class="form-control w300" id="carShopName" placeholder="Car Name"
-                                v-model.trim="carName">
+                                v-model.trim="carName" @input="validateCarName($event)"
+                                @change="validateCarName($event)">
 
                             <label for="carShopName">Car Name</label>
 
@@ -43,8 +44,9 @@
 
                         <div class="form-floating" :class="{ 'form-data-error': carPriceErr }">
 
-                            <input type="number" class="form-control w300" id="carShopPrice" placeholder="Car Price"
-                                v-model.trim="carPrice">
+                            <input type="text" class="form-control w300" id="carShopPrice" placeholder="Car Price"
+                                v-model.trim="carPrice" @input="validateCarPrice($event)"
+                                @change="validateCarPrice($event)">
 
                             <label for="carShopPrice">Car Price</label>
 
@@ -64,8 +66,9 @@
 
                         <div class="form-floating" :class="{ 'form-data-error': carModelYearErr }">
 
-                            <input type="number" class="form-control w300" id="carShopModelYear"
-                                placeholder="Car Model Year" v-model.trim="carModelYear">
+                            <input type="text" class="form-control w300" id="carShopModelYear"
+                                placeholder="Car Model Year" v-model.trim="carModelYear"
+                                @input="validateCarModelYear($event)" @change="validateCarModelYear($event)">
 
                             <label for="carShopModelYear">Car Model Year</label>
 
@@ -86,7 +89,7 @@
                         <div class="form-floating" :class="{ 'form-data-error': carImageErr }">
 
                             <input type="file" class="form-control w300 customFileField" id="carShopImage"
-                                placeholder="Car Image" ref="carImg">
+                                placeholder="Car Image" ref="carImg" @input="validateCarImage()" @change="validateCarImage()">
 
                             <label for="carShopImage">Car Image</label>
 
@@ -107,7 +110,7 @@
                         <div class="form-floating" :class="{ 'form-data-error': carDescErr }">
 
                             <textarea class="form-control w300 h125" id="carShopDesc" placeholder="Car Description"
-                                v-model.trim="carDesc"></textarea>
+                                v-model.trim="carDesc" @input="validateCarDesc($event)" @change="validateCarDesc($event)"></textarea>
 
                             <label for="carShopDesc">Car Description</label>
 
@@ -125,7 +128,7 @@
 
                     <button class="btn btn-outline-success" @click.prevent="addNewCar()">Add New Car</button>
 
-                    <button type="reset" class="btn btn-outline-primary">Reset</button>
+                    <button type="reset" class="btn btn-outline-primary" @click="resetFormErr()">Reset</button>
 
                 </div>
 
@@ -159,26 +162,31 @@ export default {
             carNameErr: false,
             // carNameMsg: "Enter Car Name",
             carNameMsg: "",
+            isCarNameValidated: false,
             carPrice: "",
             carPriceErr: false,
             // carPriceMsg: "Enter Car Price",
             carPriceMsg: "",
+            isCarPriceValidated: false,
             carModelYear: "",
             carModelYearErr: false,
             // carModelYearMsg: "Enter Car Model Year",
             carModelYearMsg: "",
+            isCarModelYearValidated: false,
             carImg: "",
             carImageErr: false,
             // carImageMsg: "Select Car Image",
             carImageMsg: "",
+            isCarImageValidated: false,
             carDesc: "",
             carDescErr: false,
             // carDescMsg: "Enter Car Description",
             carDescMsg: "",
-            resultSuccess: "",
-            resultSuccessMsg: "Add Car Successfully",
-            resultErr: "",
-            resultErrMsg: "Failed, Try Again.",
+            isCarDescValidated: false,
+            resultSuccess: false,
+            resultSuccessMsg: "",
+            resultErr: false,
+            resultErrMsg: "",
         }
     },
 
@@ -186,8 +194,41 @@ export default {
         goHome() {
             this.$router.push({ name: "Home" });
         },
-        addNewCar(){
-            console.log("Add New Car");
+        addNewCar() {
+
+            // console.log("Add New Car");
+
+            // If All Validated Successfully
+            if (this.isCarNameValidated && this.isCarPriceValidated && this.isCarModelYearValidated && this.isCarImageValidated && this.isCarDescValidated) {
+                // console.log("Validated Successfully");
+                this.resultSuccess = true;
+                this.resultSuccessMsg = "Validated Successfully";
+                this.resultErr = false;
+                this.resultErrMsg = "";
+            } else{
+                // console.log("Failed Validating Form");
+                this.resultErr = true;
+                this.resultErrMsg = "Failed Validating Form";
+                this.resultSuccess = false;
+                this.resultSuccessMsg = "";
+            }
+
+        },
+        resetFormErr(){
+            this.carNameErr = false,
+            this.carNameMsg = "",
+            this.carPriceErr = false,
+            this.carPriceMsg = "",
+            this.carModelYearErr = false,
+            this.carModelYearMsg= "",
+            this.carImageErr = false,
+            this.carImageMsg = "",
+            this.carDescErr = false,
+            this.carDescMsg = "",
+            this.resultSuccess = false,
+            this.resultSuccessMsg = "",
+            this.resultErr = false,
+            this.resultErrMsg = ""
         },
     }
 
@@ -211,6 +252,7 @@ export default {
 
 .error-feedback {
     padding-left: 3px;
+    font-size: 0.9rem;
 }
 
 .customFileField {
