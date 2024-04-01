@@ -360,7 +360,9 @@ export default {
         },
         removeImage() {
             this.image = "";
-            // this.validateCarImage();
+            setTimeout(()=>{
+                this.validateCarImage();
+            }, 500);
         },
 
         // Add New Car Method
