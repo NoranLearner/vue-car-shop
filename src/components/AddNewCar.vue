@@ -347,6 +347,7 @@ export default {
                     this.isCarImageValidated = true;
                     this.carImageMsg = "";
                     this.createImage(this.$refs.carImg.files[0]);
+                    this.carImg = this.$refs.carImg.files[0];
                 } else {
                     this.carImageErr = true;
                     this.isCarImageValidated = false;
@@ -360,7 +361,7 @@ export default {
         },
         removeImage() {
             this.image = "";
-            setTimeout(()=>{
+            setTimeout(() => {
                 this.validateCarImage();
             }, 500);
         },
@@ -377,6 +378,21 @@ export default {
                 this.resultSuccessMsg = "Validated Successfully";
                 this.resultErr = false;
                 this.resultErrMsg = "";
+                // Show Form Data
+                let fd = new FormData();
+                fd.append("name", this.carName);
+                fd.append("price", this.carPrice);
+                fd.append("modelYear", this.carModelYear);
+                fd.append("description", this.carDesc);
+                fd.append("carImage", this.carImg);
+                // Print in console
+                for (let pair of fd.entries()) {
+                    console.log(pair[0] + ", " + pair[1]);
+                }
+                // xhr
+                let xhr = new XMLHttpRequest;
+                xhr.open("POST", 'https://localhost:8080/add/new-car', 'true');
+                xhr.send(fd);
             } else {
                 // console.log("Failed Validating Form");
                 this.resultErr = true;
@@ -400,19 +416,19 @@ export default {
         // Reset Method
         resetFormErr() {
             this.carNameErr = false,
-            this.carNameMsg = "",
-            this.carPriceErr = false,
-            this.carPriceMsg = "",
-            this.carModelYearErr = false,
-            this.carModelYearMsg = "",
-            this.carImageErr = false,
-            this.carImageMsg = "",
-            this.carDescErr = false,
-            this.carDescMsg = "",
-            this.resultSuccess = false,
-            this.resultSuccessMsg = "",
-            this.resultErr = false,
-            this.resultErrMsg = ""
+                this.carNameMsg = "",
+                this.carPriceErr = false,
+                this.carPriceMsg = "",
+                this.carModelYearErr = false,
+                this.carModelYearMsg = "",
+                this.carImageErr = false,
+                this.carImageMsg = "",
+                this.carDescErr = false,
+                this.carDescMsg = "",
+                this.resultSuccess = false,
+                this.resultSuccessMsg = "",
+                this.resultErr = false,
+                this.resultErrMsg = ""
         },
     }
 
