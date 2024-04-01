@@ -86,7 +86,7 @@
 
                     <div class="col-auto d-block mx-auto">
 
-                        <div class="form-floating" :class="{ 'form-data-error': carImageErr }">
+                        <div class="form-floating" :class="{ 'form-data-error': carImageErr }" v-if="!image">
 
                             <input type="file" class="form-control w300 customFileField" id="carShopImage"
                                 placeholder="Car Image" ref="carImg" @input="validateCarImage()"
@@ -96,6 +96,14 @@
 
                             <span class="error-feedback" v-if="carImageErr">{{ carImageMsg }}</span>
 
+                        </div>
+
+                        <div v-else>
+                            <span>Uploaded Car Image:</span>
+                            <br />
+                            <img :src="image" alt="" class="w150 rounded">
+                            <br />
+                            <button class="btn btn-outline-danger my-2" @click="removeImage()">Remove Car Image</button>
                         </div>
 
                     </div>
@@ -111,7 +119,7 @@
                         <div class="form-floating" :class="{ 'form-data-error': carDescErr }">
 
                             <textarea class="form-control w300 h125" id="carShopDesc" placeholder="Car Description"
-                                v-model.trim="carDesc" @input="validateCarDesc($event)"
+                                v-model.trim="carDesc" @keyup="validateCarDesc($event)"
                                 @change="validateCarDesc($event)"></textarea>
 
                             <label for="carShopDesc">Car Description</label>
@@ -189,6 +197,8 @@ export default {
             resultSuccessMsg: "",
             resultErr: false,
             resultErrMsg: "",
+            // Uploaded Image
+            image: "",
         }
     },
 
@@ -322,12 +332,21 @@ export default {
                 return true;
             }
         },
+        createImage(file) {
+            new Image();
+            let reader = new FileReader();
+            reader.onload = (e) => {
+                this.image = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        },
         validateCarImage() {
             if (this.$refs.carImg.files[0]) {
                 if (this.validateFileExtension("carShopImage") == true) {
                     this.carImageErr = false;
                     this.isCarImageValidated = true;
                     this.carImageMsg = "";
+                    this.createImage(this.$refs.carImg.files[0]);
                 } else {
                     this.carImageErr = true;
                     this.isCarImageValidated = false;
@@ -338,6 +357,10 @@ export default {
                 this.isCarImageValidated = false;
                 this.carImageMsg = "Must Select Car Image";
             }
+        },
+        removeImage() {
+            this.image = "";
+            // this.validateCarImage();
         },
 
         // Add New Car Method
@@ -375,19 +398,19 @@ export default {
         // Reset Method
         resetFormErr() {
             this.carNameErr = false,
-                this.carNameMsg = "",
-                this.carPriceErr = false,
-                this.carPriceMsg = "",
-                this.carModelYearErr = false,
-                this.carModelYearMsg = "",
-                this.carImageErr = false,
-                this.carImageMsg = "",
-                this.carDescErr = false,
-                this.carDescMsg = "",
-                this.resultSuccess = false,
-                this.resultSuccessMsg = "",
-                this.resultErr = false,
-                this.resultErrMsg = ""
+            this.carNameMsg = "",
+            this.carPriceErr = false,
+            this.carPriceMsg = "",
+            this.carModelYearErr = false,
+            this.carModelYearMsg = "",
+            this.carImageErr = false,
+            this.carImageMsg = "",
+            this.carDescErr = false,
+            this.carDescMsg = "",
+            this.resultSuccess = false,
+            this.resultSuccessMsg = "",
+            this.resultErr = false,
+            this.resultErrMsg = ""
         },
     }
 
@@ -396,6 +419,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.w150 {
+    width: 150px !important;
+}
+
 .w300 {
     width: 300px !important;
 }
