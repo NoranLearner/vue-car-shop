@@ -90,7 +90,7 @@
 
                             <input type="file" class="form-control w300 customFileField" id="carShopImage"
                                 placeholder="Car Image" ref="carImg" @input="validateCarImage()"
-                                @change="validateCarImage()">
+                                @change="validateCarImage()" @click="validateCarImage()">
 
                             <label for="carShopImage">Car Image</label>
 
@@ -192,6 +192,10 @@ export default {
         }
     },
 
+    mounted() {
+        // console.log(this.$refs.carImg.files[0]);
+    },
+
     methods: {
 
         // Go To Home Page
@@ -290,12 +294,12 @@ export default {
             let val = e.target.value;
             this.validateCarDescInput(val);
         },
-        validateCarDescInput(val){
+        validateCarDescInput(val) {
             if (val == "") {
                 this.carDescErr = true;
                 this.isCarDescValidated = false;
                 this.carDescMsg = "Must Enter Car Description";
-            } else if( val.length > 100 ){
+            } else if (val.length > 100) {
                 this.carDescErr = true;
                 this.isCarDescValidated = false;
                 this.carDescMsg = "Car Description Must be 100 chars or less";
@@ -303,6 +307,36 @@ export default {
                 this.carDescErr = false;
                 this.isCarDescValidated = true;
                 this.carDescMsg = "";
+            }
+        },
+
+        // Car Image
+        validateFileExtension(id) {
+            let fileInput = document.getElementById(id);
+            let filePath = fileInput.value;
+            //Allowing File Type
+            let allowExtensions = /(\.jpg|\.png|\.jpeg|\.gif)$/i;
+            if (!allowExtensions.exec(filePath)) {
+                return false;
+            } else {
+                return true;
+            }
+        },
+        validateCarImage() {
+            if (this.$refs.carImg.files[0]) {
+                if (this.validateFileExtension("carShopImage") == true) {
+                    this.carImageErr = false;
+                    this.isCarImageValidated = true;
+                    this.carImageMsg = "";
+                } else {
+                    this.carImageErr = true;
+                    this.isCarImageValidated = false;
+                    this.carImageMsg = "Car Image has to be: jpg, png, jpeg, or gif";
+                }
+            } else {
+                this.carImageErr = true;
+                this.isCarImageValidated = false;
+                this.carImageMsg = "Must Select Car Image";
             }
         },
 
@@ -332,6 +366,8 @@ export default {
                 this.validateCarModelYearInput(this.carModelYear);
                 // Car Description Validate
                 this.validateCarDescInput(this.carDesc);
+                // Car Image Validate
+                this.validateCarImage();
             }
 
         },
