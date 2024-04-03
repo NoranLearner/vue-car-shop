@@ -125,11 +125,57 @@ if ($action == "update") {
 
             // insert into DB
 
+            /* $sql = mysql_query("INSERT INTO `cars` (name, price, modelYear, description, carImage) VALUES ($name, $price, $modelYear, $description, $imgName)");
+
+            if ($sql) {
+                $results["error"] = false;
+                $results["message"] = "Added New Car Successfully";
+                $results["added_data"] = true;
+            } else {
+                $results["error"] = true;
+                $results["message"] = "Failed Saving Car Image, Try again!";
+                $results["added_data"] = false;
+            } */
+
+
+
+            $dsn = 'mysql:host=localhost;dbname=vue-car-shop'; // Data Source Name
+
+            $user = 'root'; // The User To Connect
+
+            $pass = ''; // Password Of This User
+
+            $options = array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8');
+
+            try {
+                $db = new PDO($dsn, $user, $pass, $options); // Start A New Connection Wth PDO Class
+                $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                $q = "INSERT INTO `cars` (name, price, modelYear, description, carImage) VALUES ($name, $price, $modelYear, $description, $imgName)";
+                $db->exec($q);
+                echo 'You are connected';
+            } catch (PDOException $e) {
+                echo 'Failed' . $e->getMessage();
+            }
+
+            /* $sql = "INSERT INTO `cars` (name, price, modelYear, description, carImage) VALUES ($name, $price, $modelYear, $description, $imgName)";
+            $db->exec($sql);
+
+            if ($sql) {
+                $results["error"] = false;
+                $results["message"] = "Added New Car Successfully";
+                $results["added_data"] = true;
+            } else {
+                $results["error"] = true;
+                $results["message"] = "Failed Saving Car Image, Try again!";
+                $results["added_data"] = false;
+            } */
+
 
 
         } else {
             $results["error"] = true;
             $results["message"] = "Failed Saving Car Image, Try again!";
+            $results["added_new_car"] = false;
         }
 
     }
