@@ -162,6 +162,8 @@
 
 <script>
 
+import axios from 'axios';
+
 export default {
 
     name: 'AddNewCar',
@@ -367,7 +369,7 @@ export default {
         },
 
         // Add New Car Method
-        addNewCar() {
+        async addNewCar() {
 
             // console.log("Add New Car");
 
@@ -386,13 +388,15 @@ export default {
                 fd.append("description", this.carDesc);
                 fd.append("carImage", this.carImg);
                 // Print in console
-                for (let pair of fd.entries()) {
+                /* for (let pair of fd.entries()) {
                     console.log(pair[0] + ", " + pair[1]);
-                }
+                } */
                 // xhr
-                let xhr = new XMLHttpRequest;
+                /* let xhr = new XMLHttpRequest;
                 xhr.open("POST", 'https://localhost:8080/add/new-car', 'true');
-                xhr.send(fd);
+                xhr.send(fd); */
+                let rst = await axios.post(`http://localhost/vue-car-shop/src/api/cars.php?action=update`, fd);
+                console.log(rst);
             } else {
                 // console.log("Failed Validating Form");
                 this.resultErr = true;
