@@ -10,7 +10,7 @@ $results["message"] = "";
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "vue-car-shop";
+$dbname = "CarShop";
 // Create connection
 // https://stackoverflow.com/questions/10208691/do-i-need-a-php-mysql-connection-in-each-function-that-uses-database
 // $connect = @mysql_connect($servername, $username, $password);
@@ -118,6 +118,25 @@ if ($action == "update") {
             $results["added_new_car"] = true;
 
             // insert into DB
+
+            //Inserting a records into the cars table
+
+            // $sql = mysql_query("insert into `cars` (name, price, modelYear, description, carImage) VALUES ($name, $price, $modelYear, $description, $imgName)");
+            // $sql = mysqli_query($connect, "INSERT INTO `cars` (name, price, modelYear, description, carImage) VALUES ('hyundai', 2000000, 2006, 'nice', 'myImg.png')");
+            $sql = mysqli_query($connect, "INSERT INTO `cars` (name, price, modelYear, description, carImage) VALUES ('$name', '$price', '$modelYear', '$description', '$imgName')");
+
+            // print("Records Inserted ..."."\n");
+
+            if ($sql) {
+                $results["error"] = false;
+                $results["message"] = "Added New Car Successfully";
+                $results["added_data"] = true;
+            } else {
+                $results["error"] = true;
+                $results["message"] = "Failed Saving Data in Database, Try again!";
+                $results["added_data"] = false;
+            }
+
         }
 
     } else {
